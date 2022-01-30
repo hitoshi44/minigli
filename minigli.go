@@ -4,33 +4,21 @@ import (
 	"os"
 )
 
-type CliPack struct {
-	Cmd string
-	Args []string
-	Opts map[string]string
-	ShortOpts map[string]string
-	Paths []string
+type MiniGli struct {
+	Cmd		string
+	Subs	[]string
+	Longs	map[string]string
+	Shorts	map[string]string
 }
 
-func Pack() CliPack {
+func Pack() MiniGli {
 	paths, longs, shorts := parseInputFrom(os.Args)
-	return CliPack{
+	return MiniGli{
 		Cmd : paths[0],
-		Args: paths[1:],
-		Opts: longs,
-		Paths: paths,
-		ShortOpts: shorts}
+		Subs: paths[1:],
+		Longs:  longs,
+		Shorts: shorts}
 }
-
-type argKind = int
-
-const (
-	shortOptKey argKind = iota
-	shortOptPair
-	longOptKey
-	longOptPair
-	valueOrArg
-)
 
 func parseInputFrom(args []string) ([]string,map[string]string,map[string]string) {
 
