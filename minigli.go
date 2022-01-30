@@ -12,7 +12,7 @@ type MiniGli struct {
 }
 
 func Pack() (MiniGli, bool) {
-	paths, longs, shorts, ok := parseInputFrom(os.Args)
+	paths, longs, shorts, ok := parseInputFrom(os.Args[1:])
 	return MiniGli{
 			Cmd : paths[0],
 			Subs: paths[1:],
