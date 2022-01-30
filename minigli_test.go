@@ -56,7 +56,7 @@ func Test_parseInputsFrom(t *testing.T) {
 	const fmtmap = "%s\ninput:%s\ngot  :%s => %s\nwant :%s => %s\n"
 	for _, test := range testArguments {
 
-		path, longs, shorts:= parseInputFrom(test.input)
+		path, longs, shorts, _:= parseInputFrom(test.input)
 
 		// check Command-Path
 		tag := "Command-Path"

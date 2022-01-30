@@ -11,20 +11,22 @@ type MiniGli struct {
 	Shorts	map[string]string
 }
 
-func Pack() MiniGli {
-	paths, longs, shorts := parseInputFrom(os.Args)
+func Pack() (MiniGli, bool) {
+	paths, longs, shorts, ok := parseInputFrom(os.Args)
 	return MiniGli{
-		Cmd : paths[0],
-		Subs: paths[1:],
-		Longs:  longs,
-		Shorts: shorts}
+			Cmd : paths[0],
+			Subs: paths[1:],
+			Longs:  longs,
+			Shorts: shorts},
+		   ok
 }
 
-func parseInputFrom(args []string) ([]string,map[string]string,map[string]string) {
+func parseInputFrom(args []string) ([]string,map[string]string,map[string]string, bool) {
 
 	paths := make([]string,0,len(args))
 	sOpts := make(map[string]string)
 	lOpts := make(map[string]string)
+	ok    := true
 
 	i := 0
 	lim := len(args)
@@ -38,6 +40,11 @@ func parseInputFrom(args []string) ([]string,map[string]string,map[string]string
 				// Long Option.
 				// Judge a KeyValue or Key only.
 				pos := findColonOrEqual(arg)
+				if (pos == 2) {
+					// Invalid option "--:*"
+					ok = false
+					break
+				}
 				if pos > -1 {
 					lOpts[arg[2:pos]] = arg[pos+1:]
 				} else {
@@ -53,6 +60,11 @@ func parseInputFrom(args []string) ([]string,map[string]string,map[string]string
 				// Short Option
 				// Judge KeyValue or Key only
 				pos := findColonOrEqual(arg)
+				if (pos == 1) {
+					// Invalid option "-:*"
+					ok = false
+					break
+				}
 				if pos > -1 {
 					sOpts[arg[1:pos]] = arg[pos+1:]
 				} else {
@@ -70,7 +82,7 @@ func parseInputFrom(args []string) ([]string,map[string]string,map[string]string
 		}
 		i++ // for loop add
 	}
-	return paths, lOpts, sOpts
+	return paths, lOpts, sOpts, ok
 }
 
 
