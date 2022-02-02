@@ -15,6 +15,7 @@ type MiniGli struct {
 }
 ```
 
+ - Arguments consist of Options and Commands.
  - Options are key-value pair given with 1 or 2 "-"s.
  - Commands are the rest.
  - `Cmd` is the first of Commands
@@ -45,16 +46,20 @@ Long option can be specified as below:
  - `--option:value`
  - `--option=value`
 
-Short option is same.
+Short option can be as same.
 
-Key only option is specified like this:
+Key-only option is specified like this:
 
  - `--opt:`
  - `-opts=`
 
 Only last of arguments can be key only option withou ":" or "=".
 
-Next are invalid options and `Pack()` fails to parse then returns `false`.
+```
+your-cli command sub commands -o file.txt --validKeyOnlyOption
+```
+
+Belows will be treated as invalid options and `Pack()` fails to parse then returns `false`.
 
  - `--:SomeString`
  - `-:ThisIsToo`
