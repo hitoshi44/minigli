@@ -20,7 +20,15 @@ func Pack() (MiniGli, bool) {
 			Shorts: shorts},
 		   ok
 }
-
+func (mg *MiniGli) getOption(option string, fullMatch bool) (value string, exist bool) {
+	value, exist = mg.Longs[option]
+	if exist {return value, exist}
+	value, exist =  mg.Shorts[option]
+	if exist {return value, exist}
+	if fullMatch {return value,exist}
+	value, exist =  mg.Shorts[option[:1]] // very first rune
+	return value, exist
+}
 func parseInputFrom(args []string) ([]string,map[string]string,map[string]string, bool) {
 
 	paths := make([]string,0,len(args))
@@ -84,8 +92,6 @@ func parseInputFrom(args []string) ([]string,map[string]string,map[string]string
 	}
 	return paths, lOpts, sOpts, ok
 }
-
-
 func findColonOrEqual(arg string) int {
 	// For fail, return -1.
 	result := -1
