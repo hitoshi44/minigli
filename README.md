@@ -4,12 +4,13 @@
 
 # Usage 
 
+## Start to use
+
 `minigli.Pack()` returns MiniGli (and error check bool).
 
 ``` go
 type MiniGli struct {
-	Cmd	string           // Command 
-	Subs	[]string         // Sub Commands 
+	Cmds	string           // Command 
 	Longs	map[string]string// Options start with "--"
 	Shorts	map[string]string// Options start with "-"
 }
@@ -18,8 +19,6 @@ type MiniGli struct {
  - Arguments consist of Options and Commands.
  - Options are key-value pair given with 1 or 2 "-"s.
  - Commands are the rest.
- - `Cmd` is the first of Commands
- - `Subs` are the rest.
  
 e.g)
 
@@ -32,11 +31,29 @@ if !ok {
     // "invalid option" will be explained later.
 }
 
-mg.Cmd // "verb"
-mg.Subs// ["target", "target2"]
+mg.Cmds // ["verb", "target", "target2"]
 mg.Longs// {"option" : "value"}
 mg.Shorts//{"another": "value"}
 ```
+
+## Helper Methods
+
+### GetOption(string, bool) (string, bool)
+``` go
+value, exist := mg.GetOption("option", false)
+if exist {
+  process(value)
+}
+```
+`GetOption` take option's name and bool(fullMatch), returns options value if exist, and boolean represents found or not.
+If pass argument fullMatch=true, this method find only full match option, ignore 1 char match.
+
+e.g) 
+
+ - `GetOption("option", false)` matches "--option", "-option", "-o"
+ - `GetOption("optionF, true")` matches "--option", "-option"
+
+
 
 # Options rule
 
