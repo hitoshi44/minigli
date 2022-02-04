@@ -20,7 +20,7 @@ func Pack() (MiniGli, bool) {
 			Shorts: shorts},
 		   ok
 }
-func (mg *MiniGli) getOption(option string, fullMatch bool) (value string, exist bool) {
+func (mg *MiniGli) GetOption(option string, fullMatch bool) (value string, exist bool) {
 	value, exist = mg.Longs[option]
 	if exist {return value, exist}
 	value, exist =  mg.Shorts[option]
