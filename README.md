@@ -6,7 +6,18 @@
 
 ## Start to use
 
-`minigli.Pack()` returns MiniGli (and error check bool).
+Just use `minigli.Pack()` which returns object variant named MiniGli (and error check bool).
+
+(TODO : change this book into err?)
+
+```
+import "github.com/hitoshi44/minigli"
+
+mg, ok := minigli.Pack()
+if !ok {...}
+```
+
+And this is MiniGli object defined.
 
 ``` go
 type MiniGli struct {
@@ -16,9 +27,11 @@ type MiniGli struct {
 }
 ```
 
+Each property is read from Arguments. This is a rule.
+
  - Arguments consist of Options and Commands.
- - Options are key-value pair given with 1 or 2 "-"s.
- - Commands are the rest.
+ - Options are key-value pair given with 1 or 2 "-"s. `Longs`, `Shorts`
+ - Commands are the rest. `Cmds`
  
 e.g)
 
@@ -40,7 +53,7 @@ mg.Shorts//{"another": "value"}
 
 ### GetOption(string, bool) (string, bool)
 ``` go
-value, exist := mg.GetOption("option", false)
+value, found := mg.GetOption("option", false)
 if exist {
   process(value)
 }
@@ -70,7 +83,7 @@ Key-only option is specified like this:
  - `--opt:`
  - `-opts=`
 
-Only last of arguments can be key only option withou ":" or "=".
+Only last of arguments can be key-only option withou ":" or "=".
 
 ```
 your-cli command sub commands -o file.txt --validKeyOnlyOption
